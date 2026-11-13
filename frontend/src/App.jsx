@@ -1,9 +1,10 @@
 import Login from "./pages/Login";
+import StudentManagament from "./pages/StudentManagement";
 
 function App(){
   return(
     <div>
-       <Login/>
+       <StudentManagament />
     </div>
   );
 }
