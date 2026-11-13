@@ -9,12 +9,35 @@ function Login() {
     const [message, setMessage] = useState("");
 
     const handleLogin = (event) => {
-        event.preventDefault();
 
-        setMessage(
-            "Login interface is working. Backend authentication will be connected next."
-        );
-    };
+    event.preventDefault();
+
+    setMessage("");
+
+    // Check empty email
+    if (email.trim() === "") {
+        setMessage("Please enter your email address.");
+        return;
+    }
+
+    // Check empty password
+    if (password.trim() === "") {
+        setMessage("Please enter your password.");
+        return;
+    }
+
+    // Check email format
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+        setMessage("Please enter a valid email address.");
+        return;
+    }
+
+    // Frontend validation completed
+    setMessage("Validation successful. Ready to connect with backend.");
+
+};
 
     return (
         <div className="login-container">
