@@ -22,6 +22,138 @@ namespace InstituteManagement.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("InstituteManagement.Api.Models.Batch", b =>
+                {
+                    b.Property<int>("BatchId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BatchId"));
+
+                    b.Property<string>("BatchName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("BatchId");
+
+                    b.ToTable("Batches");
+                });
+
+            modelBuilder.Entity("InstituteManagement.Api.Models.BatchModule", b =>
+                {
+                    b.Property<int>("BatchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BatchId", "ModuleId");
+
+                    b.HasIndex("ModuleId");
+
+                    b.ToTable("BatchModules");
+                });
+
+            modelBuilder.Entity("InstituteManagement.Api.Models.Faculty", b =>
+                {
+                    b.Property<int>("FacultyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FacultyId"));
+
+                    b.Property<string>("Department")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("JoiningDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("Specialization")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("FacultyId");
+
+                    b.ToTable("Faculties");
+                });
+
+            modelBuilder.Entity("InstituteManagement.Api.Models.FacultyBatchModule", b =>
+                {
+                    b.Property<int>("FacultyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BatchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FacultyId", "BatchId", "ModuleId");
+
+                    b.HasIndex("BatchId", "ModuleId");
+
+                    b.ToTable("FacultyBatchModules");
+                });
+
+            modelBuilder.Entity("InstituteManagement.Api.Models.Module", b =>
+                {
+                    b.Property<int>("ModuleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ModuleId"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModuleName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("ModuleId");
+
+                    b.ToTable("Modules");
+                });
+
             modelBuilder.Entity("InstituteManagement.Api.Models.Student", b =>
                 {
                     b.Property<int>("StudentId")
@@ -99,6 +231,59 @@ namespace InstituteManagement.Api.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("InstituteManagement.Api.Models.BatchModule", b =>
+                {
+                    b.HasOne("InstituteManagement.Api.Models.Batch", "Batch")
+                        .WithMany("BatchModules")
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("InstituteManagement.Api.Models.Module", "Module")
+                        .WithMany("BatchModules")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
+
+                    b.Navigation("Module");
+                });
+
+            modelBuilder.Entity("InstituteManagement.Api.Models.FacultyBatchModule", b =>
+                {
+                    b.HasOne("InstituteManagement.Api.Models.Faculty", "Faculty")
+                        .WithMany("FacultyBatchModules")
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("InstituteManagement.Api.Models.BatchModule", "BatchModule")
+                        .WithMany()
+                        .HasForeignKey("BatchId", "ModuleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("BatchModule");
+
+                    b.Navigation("Faculty");
+                });
+
+            modelBuilder.Entity("InstituteManagement.Api.Models.Batch", b =>
+                {
+                    b.Navigation("BatchModules");
+                });
+
+            modelBuilder.Entity("InstituteManagement.Api.Models.Faculty", b =>
+                {
+                    b.Navigation("FacultyBatchModules");
+                });
+
+            modelBuilder.Entity("InstituteManagement.Api.Models.Module", b =>
+                {
+                    b.Navigation("BatchModules");
                 });
 #pragma warning restore 612, 618
         }

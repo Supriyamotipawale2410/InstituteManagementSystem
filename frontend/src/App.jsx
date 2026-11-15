@@ -1,12 +1,12 @@
-import Login from "./pages/Login";
-import StudentManagament from "./pages/StudentManagement";
 
-function App(){
-  return(
-    <div>
-       <StudentManagament />
-    </div>
-  );
+import FacultyManagement from "./pages/FacultyManagement";
+
+function App() {
+    return (
+        <div>
+            <FacultyManagement />
+        </div>
+    );
 }
 
 export default App;
