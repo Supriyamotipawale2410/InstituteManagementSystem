@@ -1,10 +1,9 @@
-
-import FacultyManagement from "./pages/FacultyManagement";
+import BatchManagement from "./pages/BatchManagement";
 
 function App() {
     return (
         <div>
-            <FacultyManagement />
+            <BatchManagement />
         </div>
     );
 }
